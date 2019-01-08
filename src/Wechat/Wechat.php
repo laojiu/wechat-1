@@ -67,24 +67,24 @@ class Wechat extends WechatBase
         if (!$this->cache) {
             $this->cache = new FilesystemCache(dirname(dirname(__DIR__)) . '/runtime/cache');
         }
-        $target = !empty($this->cache['target']) ? $this->cache['target'] : static::CACHE_TARGET_FILE;
+        $target = !empty($this->cache->target) ? $this->cache->target : static::CACHE_TARGET_FILE;
         switch ($target) {
             case static::CACHE_TARGET_FILE:
-                $dir = !empty($this->cache['dir']) ?
-                    $this->cache['dir'] : (dirname(dirname(__DIR__)) . '/runtime/cache');
+                $dir = !empty($this->cache->dir) ?
+                    $this->cache->dir : (dirname(dirname(__DIR__)) . '/runtime/cache');
                 $this->cache = new FilesystemCache($dir);
                 break;
             case static::CACHE_TARGET_REDIS:
-                $host = !empty($this->cache['host']) ? $this->cache['host'] : '127.0.0.1';
-                $port = !empty($this->cache['port']) ? $this->cache['port'] : 6379;
+                $host = !empty($this->cache->host) ? $this->cache->host : '127.0.0.1';
+                $port = !empty($this->cache->port) ? $this->cache->port : 6379;
                 $redis = new \Redis();
                 $redis->connect($host, $port);
                 $this->cache = new RedisCache();
                 $this->cache->setRedis($redis);
                 break;
             case static::CACHE_TARGET_MEMCACHED:
-                $host = !empty($this->cache['host']) ? $this->cache['host'] : '127.0.0.1';
-                $port = !empty($this->cache['port']) ? $this->cache['port'] : 6379;
+                $host = !empty($this->cache->host) ? $this->cache->host : '127.0.0.1';
+                $port = !empty($this->cache->port) ? $this->cache->port : 6379;
                 $memcached = new \Memcached();
                 $memcached->addServer($host, $port);
                 $this->cache = new MemcachedCache();
